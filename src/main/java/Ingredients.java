@@ -5,4 +5,8 @@ public class Ingredients {
     public Ingredients(ArrayList<String> ingredients){
         this.ingredients = ingredients;
     }
+
+    public ArrayList<String> getIngredients(){
+        return ingredients;
+    }
 }
