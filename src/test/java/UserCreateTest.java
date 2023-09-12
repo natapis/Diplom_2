@@ -1,4 +1,3 @@
-import groovy.transform.ASTTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.After;
@@ -34,8 +33,10 @@ public class UserCreateTest {
 //            idCourier = loginResponse.body().as(LoginAnswer.class).getId();
             token = loginResponse.body().as(LoginResponse.class).getAccessToken();
             UserClient userClient = new UserClient();
-            Response deleteResponse = userClient.deleteUser(token);
-            Assert.assertEquals("Пользователь не удален", 200, deleteResponse.statusCode());
+            Response deleteResponse = userClient.deleteUser(token.substring(7));
+            System.out.println(token);
+            Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
+
         }
 
     }
