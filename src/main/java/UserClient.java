@@ -24,9 +24,11 @@ public class UserClient {
                 .when()
                 .post(LOGIN_USER_API);
     }
-    public Response deleteUser(User user){
+    public Response deleteUser(String token){
         return given()
-                .delete(UPDATE_DELETE_USER_API,user);
+                .auth().oauth2(token)
+                .and()
+                .delete(UPDATE_DELETE_USER_API);
     }
     public Response updateUser(){
         return given()
