@@ -35,9 +35,9 @@ public class UserCreateTest {
         userClient.createUser(user);
         User doubleUser = UserGenerator.doubleUserEmail(user.getEmail());
         Response createResponse = userClient.createUser(doubleUser);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         createResponse.then().body("message", equalTo("User already exists")).and().statusCode(403);
  //       Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
-        loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
  //       Assert.assertEquals("Логинится, а не должен", 401, loginResponse.statusCode());
     }
@@ -49,9 +49,9 @@ public class UserCreateTest {
         userClient.createUser(user);
         User doubleUser = UserGenerator.doubleUserName(user.getName());
         Response createResponse = userClient.createUser(doubleUser);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
 //        createResponse.then().body("message", equalTo("User already exists")).and().statusCode(403);
-        loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
