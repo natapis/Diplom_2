@@ -59,7 +59,7 @@ public class UserUpdateTest {
     public void userUpdatePasswordWithAuth(){
         User userFake = user;
         String newPassword = faker.internet().password();
-        userFake.setName(newPassword);
+        userFake.setPassword(newPassword);
         Response updateUser = userClient.updateUserWithAuth(token.substring(7), userFake);
         updateUser.then()
                 .body("success", equalTo(true))
@@ -69,6 +69,26 @@ public class UserUpdateTest {
                 .body("user", notNullValue());
         Response loginResponseNewPassword = userClient.loginUser(UserCreds.credsForm(user));
         loginResponseNewPassword.then().statusCode(200);
+    }
+
+    @Test
+    public void userUpdateFullDataWithAuth(){
+        User userFake = user;
+        String newPassword = faker.internet().password();
+        String newEmail = faker.internet().emailAddress();
+        String newName = faker.name().username();
+        userFake.setName(newName);
+        userFake.setEmail(newEmail);
+        userFake.setPassword(newPassword);
+        Response updateUser = userClient.updateUserWithAuth(token.substring(7), userFake);
+        updateUser.then()
+                .body("success", equalTo(true))
+                .and()
+                .statusCode(200)
+                .and()
+                .body("user", notNullValue());
+        Response loginResponseNewData = userClient.loginUser(UserCreds.credsForm(user));
+        loginResponseNewData.then().statusCode(200);
     }
     public void tearDown() {
         Response loginResponseNew = userClient.loginUser(UserCreds.credsForm(user));
