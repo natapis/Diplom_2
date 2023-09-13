@@ -29,7 +29,7 @@ public class UserCreateTest {
         Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
     }
     @Test
-    public void createUserDoubleNameTest() {
+    public void createUserDoubleEmailTest() {
         UserClient userClient = new UserClient();
         User user = UserGenerator.requiredFields();
         userClient.createUser(user);
@@ -40,6 +40,32 @@ public class UserCreateTest {
         loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
  //       Assert.assertEquals("Логинится, а не должен", 401, loginResponse.statusCode());
+    }
+
+    @Test
+    public void createUserDoubleNameTest() {
+        UserClient userClient = new UserClient();
+        User user = UserGenerator.requiredFields();
+        userClient.createUser(user);
+        User doubleUser = UserGenerator.doubleUserName(user.getName());
+        Response createResponse = userClient.createUser(doubleUser);
+        Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
+//        createResponse.then().body("message", equalTo("User already exists")).and().statusCode(403);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
+    }
+
+    @Test
+    public void createUserWithoutNameTest() {
+        UserClient userClient = new UserClient();
+        User user = UserGenerator.withoutName();
+        Response createResponse = userClient.createUser(user);
+ //       User doubleUser = UserGenerator.doubleUserName(user.getName());
+ //       Response createResponse = userClient.createUser(doubleUser);
+ //       Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
+        createResponse.then().body("message", equalTo("Email, password and name are required fields")).and().statusCode(403);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(user));
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
     @After
