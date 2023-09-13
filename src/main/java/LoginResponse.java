@@ -1,7 +1,7 @@
 public class LoginResponse {
     private String accessToken;
     private String refreshToken;
-    private boolean succes;
+    private boolean success;
     private UserResponse user;
     public LoginResponse(){
 
