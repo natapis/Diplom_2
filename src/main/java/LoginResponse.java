@@ -9,4 +9,5 @@ public class LoginResponse {
     public String getAccessToken(){
         return accessToken;
     }
+    public UserResponse getUser() {return user;}
 }
