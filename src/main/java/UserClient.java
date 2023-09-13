@@ -30,8 +30,23 @@ public class UserClient {
                 .and()
                 .delete(UPDATE_DELETE_USER_API);
     }
-    public Response updateUser(){
+    public Response updateUserWithAuth(String token, User user){
         return given()
+                .header("Content-type","application/json")
+                .and()
+                .auth().oauth2(token)
+                .and()
+                .body(user)
+                .when()
+                .patch(UPDATE_DELETE_USER_API);
+    }
+
+    public Response updateUserWithoutAuth(User user){
+        return given()
+                .header("Content-type","application/json")
+                .and()
+                .body(user)
+                .when()
                 .patch(UPDATE_DELETE_USER_API);
     }
 
