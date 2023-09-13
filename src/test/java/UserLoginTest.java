@@ -32,14 +32,22 @@ public class UserLoginTest {
     }
 
     @Test
-    public void loginUserWrongLoginTest() {
-        UserClient userClient = new UserClient();
-        User user = UserGenerator.requiredFields();
-//        Response createResponse = userClient.createUser(user);
-        userClient.createUser(user);
-//        Assert.assertEquals("неверный статус ответа", 200, createResponse.statusCode());
-        loginResponse = userClient.loginUser(UserCreds.credsForm(user));
-        loginResponse.then().body("success", equalTo(true)).and().statusCode(200);
+    public void loginUserWrongEmailTest() {
+        String wrongEmail = user.getEmail() + "t";
+        String password = user.getPassword();
+        UserCreds userCredsNew = new UserCreds(wrongEmail, password);
+        Response loginResponse = userClient.loginUser(userCredsNew);
+        loginResponse.then().body("success", equalTo(false)).and().statusCode(401);
+//        Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
+    }
+
+    @Test
+    public void loginUserWrongPasswordTest() {
+        String email = user.getEmail();
+        String wrongPassword = user.getPassword() + "t";
+        UserCreds userCredsNew = new UserCreds(email, wrongPassword);
+        Response loginResponse = userClient.loginUser(userCredsNew);
+        loginResponse.then().body("success", equalTo(false)).and().statusCode(401);
 //        Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
     }
 
