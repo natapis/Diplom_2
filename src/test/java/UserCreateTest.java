@@ -68,6 +68,26 @@ public class UserCreateTest {
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
+    @Test
+    public void createUserWithoutEmailTest() {
+        UserClient userClient = new UserClient();
+        User user = UserGenerator.withoutEmail();
+        Response createResponse = userClient.createUser(user);
+        createResponse.then().body("message", equalTo("Email, password and name are required fields")).and().statusCode(403);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(user));
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
+    }
+
+    @Test
+    public void createUserWithoutPasswordTest() {
+        UserClient userClient = new UserClient();
+        User user = UserGenerator.withoutPassword();
+        Response createResponse = userClient.createUser(user);
+        createResponse.then().body("message", equalTo("Email, password and name are required fields")).and().statusCode(403);
+        loginResponse = userClient.loginUser(UserCreds.credsForm(user));
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
+    }
+
     @After
     public void tearDown(){
         if (loginResponse.statusCode() == 200) {
