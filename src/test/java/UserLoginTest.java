@@ -37,7 +37,7 @@ public class UserLoginTest {
         String password = user.getPassword();
         UserCreds userCredsNew = new UserCreds(wrongEmail, password);
         Response loginResponse = userClient.loginUser(userCredsNew);
-        loginResponse.then().body("success", equalTo(false)).and().statusCode(401);
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
 //        Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
     }
 
@@ -47,7 +47,7 @@ public class UserLoginTest {
         String wrongPassword = user.getPassword() + "t";
         UserCreds userCredsNew = new UserCreds(email, wrongPassword);
         Response loginResponse = userClient.loginUser(userCredsNew);
-        loginResponse.then().body("success", equalTo(false)).and().statusCode(401);
+        loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
 //        Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
     }
 
