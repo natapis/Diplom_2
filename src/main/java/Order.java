@@ -11,7 +11,18 @@ public class Order {
     public Order(){
 
     }
-    public Response createOrder(Ingredients ingredients){
+    public Response createOrderWithAuth(String token, ArrayList<Ingredient> ingredients){
+        return given()
+                .auth().oauth2(token)
+                .and()
+                .header("Content-type","application/json")
+                .and()
+                .body(ingredients)
+                .when()
+                .post(CREATE_GET_ORDER_API);
+    }
+
+    public Response createOrderWithoutAuth(ArrayList<Ingredient> ingredients){
         return given()
                 .header("Content-type","application/json")
                 .and()
@@ -20,7 +31,14 @@ public class Order {
                 .post(CREATE_GET_ORDER_API);
     }
 
-    public Response getInfoOrder(){
+    public Response getInfoOrderWithAuth(String token){
+        return given()
+                .auth()
+                .oauth2(token)
+                .and()
+                .get(CREATE_GET_ORDER_API);
+    }
+    public Response getInfoOrderWithoutAuth(){
         return given()
                 .get(CREATE_GET_ORDER_API);
     }

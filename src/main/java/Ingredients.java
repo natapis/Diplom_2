@@ -1,12 +1,14 @@
-import java.util.ArrayList;
+import io.restassured.response.Response;
+
+import static constant.Api.GET_INGREDIENTS;
+import static io.restassured.RestAssured.given;
 
 public class Ingredients {
-    private ArrayList<String> ingredients;
-    public Ingredients(ArrayList<String> ingredients){
-        this.ingredients = ingredients;
-    }
+    public Ingredients(){
 
-    public ArrayList<String> getIngredients(){
-        return ingredients;
+    }
+    public Response getIngredients(){
+        return given()
+                .get(GET_INGREDIENTS);
     }
 }
