@@ -59,7 +59,7 @@ public class UserClient {
     }
     public Response getInfoOrderWithoutAuth(){
         return given()
-                .get(GET_ORDER_USER_API);
+                .get(GET_ORDER_USER_API_WITHOUT_TOKEN);
     }
 
 
