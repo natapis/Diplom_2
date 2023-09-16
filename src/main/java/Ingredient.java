@@ -1,5 +1,5 @@
 public class Ingredient {
-    String id;
+    String _id;
     String name;
     String type;
     float proteins;
@@ -8,13 +8,13 @@ public class Ingredient {
     float calories;
     float price;
     String image;
-    String imageMobile;
-    String ImageLarge;
-    float v;
+    String image_mobile;
+    String Image_large;
+    float __v;
     public Ingredient(){
 
     }
-    public String getId(){return id;}
+    public String getId(){return _id;}
 
 
 
