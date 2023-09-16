@@ -2,8 +2,7 @@ import io.restassured.response.Response;
 
 import java.util.ArrayList;
 
-import static constant.Api.CREATE_GET_ORDER_API;
-import static constant.Api.CREATE_USER_API;
+import static constant.Api.*;
 import static io.restassured.RestAssured.given;
 
 public class Order {
@@ -19,7 +18,7 @@ public class Order {
                 .and()
                 .body(ingredients)
                 .when()
-                .post(CREATE_GET_ORDER_API);
+                .post(CREATE_ORDER_API);
     }
 
     public Response createOrderWithoutAuth(IngredientsForOrder ingredients){
@@ -28,18 +27,8 @@ public class Order {
                 .and()
                 .body(ingredients)
                 .when()
-                .post(CREATE_GET_ORDER_API);
+                .post(CREATE_ORDER_API);
     }
 
-    public Response getInfoOrderWithAuth(String token){
-        return given()
-                .auth()
-                .oauth2(token.substring(7))
-                .and()
-                .get(CREATE_GET_ORDER_API);
-    }
-    public Response getInfoOrderWithoutAuth(){
-        return given()
-                .get(CREATE_GET_ORDER_API);
-    }
+
 }

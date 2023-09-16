@@ -50,5 +50,17 @@ public class UserClient {
                 .patch(UPDATE_DELETE_USER_API);
     }
 
+    public Response getInfoOrderWithAuth(String token){
+        return given()
+                .auth()
+                .oauth2(token.substring(7))
+                .and()
+                .get(GET_ORDER_USER_API,token.substring(7));
+    }
+    public Response getInfoOrderWithoutAuth(){
+        return given()
+                .get(GET_ORDER_USER_API);
+    }
+
 
 }
