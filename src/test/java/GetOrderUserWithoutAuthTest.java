@@ -11,7 +11,6 @@ import java.util.Random;
 import static constant.Api.BASE_URL;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-i
 
 public class GetOrderUserWithoutAuthTest {
 
