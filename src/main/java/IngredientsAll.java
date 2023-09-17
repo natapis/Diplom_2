@@ -6,7 +6,7 @@ import static constant.Api.GET_INGREDIENTS;
 import static io.restassured.RestAssured.given;
 
 public class IngredientsAll {
-    ArrayList<String> ingredients;
+    private ArrayList<String> ingredients;
     public IngredientsAll(){
 
     }

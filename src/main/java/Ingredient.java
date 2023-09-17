@@ -1,16 +1,16 @@
 public class Ingredient {
-    String _id;
-    String name;
-    String type;
-    float proteins;
-    float fat;
-    float carbohydrates;
-    float calories;
-    float price;
-    String image;
-    String image_mobile;
-    String Image_large;
-    float __v;
+    private String _id;
+    private String name;
+    private String type;
+    private float proteins;
+    private float fat;
+    private float carbohydrates;
+    private float calories;
+    private float price;
+    private String image;
+    private String image_mobile;
+    private String Image_large;
+    private float __v;
     public Ingredient(){
 
     }

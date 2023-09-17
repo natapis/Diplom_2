@@ -40,7 +40,7 @@ public class GetOrderUserWithoutAuthTest {
         Order order = new Order();
         int numberIngredients = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredients)._id);
+        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredients).getId());
         order.createOrderWithAuth(token, ingredientsForOrder);
         Response getOrders = userClient.getInfoOrderWithoutAuth();
         getOrders.then()

@@ -39,7 +39,7 @@ public class GetOrderWithAuthTest {
         Order order = new Order();
         int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
+        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
         order.createOrderWithAuth(token, ingredientsForOrder);
         Response getOrders = userClient.getInfoOrderWithAuth(token);
         getOrders.then()
@@ -58,7 +58,7 @@ public class GetOrderWithAuthTest {
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
         for (int i = 0; i <= countIngredient; i++) {
             int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
-            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
+            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
         }
         orderOne.createOrderWithAuth(token, ingredientsForOrder);
         Order orderTwo = new Order();
