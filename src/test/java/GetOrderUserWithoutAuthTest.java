@@ -1,12 +1,13 @@
 import com.github.javafaker.Faker;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static constant.Api.BASE_URL;
 
@@ -31,14 +32,15 @@ public class GetOrderUserWithoutAuthTest {
         allIngredients = ingredientResponse.as(IngredientResponse.class).getData();
         loginResponse = userClient.loginUser(UserCreds.credsForm(user));
         token = loginResponse.body().as(LoginResponse.class).getAccessToken();
-        Random random = new Random();
     }
 
+    @DisplayName("Получение заказа конкретного пользователя без авторизации")
     @Test
     public void getOrdersOneOrder() {
         Order order = new Order();
+        int numberIngredients = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(2)._id);
+        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredients)._id);
         order.createOrderWithAuth(token, ingredientsForOrder);
         Response getOrders = userClient.getInfoOrderWithoutAuth();
         getOrders.then()
@@ -49,13 +51,11 @@ public class GetOrderUserWithoutAuthTest {
                 .body("message", equalTo("You should be authorised"));
     }
 
-
+    @After
     public void tearDown() {
         if (loginResponse.statusCode() == 200) {
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
-
         }
     }
 

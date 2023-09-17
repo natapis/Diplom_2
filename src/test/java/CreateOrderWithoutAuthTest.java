@@ -88,7 +88,6 @@ public class CreateOrderWithoutAuthTest {
     public void tearDown() {
         if (loginResponse.statusCode() == 200) {
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
         }
     }
