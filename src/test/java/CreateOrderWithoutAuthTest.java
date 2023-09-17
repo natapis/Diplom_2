@@ -40,7 +40,7 @@ public class CreateOrderWithoutAuthTest {
         Order order = new Order();
         int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
+        ingredientsForOrder.getIngredients().add(allIngredients.get(numberIngredient).getId());
         Response createOrder = order.createOrderWithoutAuth(ingredientsForOrder);
         createOrder.then()
                 .statusCode(401)
@@ -72,9 +72,9 @@ public class CreateOrderWithoutAuthTest {
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
         for (int i = 0; i <= countIngredient; i++) {
             int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
-            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
+            ingredientsForOrder.getIngredients().add(allIngredients.get(numberIngredient).getId());
         }
-        ingredientsForOrder.ingredients.set(0, ingredientsForOrder.ingredients.get(0) + "test");
+        ingredientsForOrder.getIngredients().set(0, ingredientsForOrder.getIngredients().get(0) + "test");
         Response createOrder = order.createOrderWithoutAuth(ingredientsForOrder);
         createOrder.then()
                 .statusCode(401)

@@ -40,7 +40,7 @@ public class CreateOrderWithAuthTest {
         Order order = new Order();
         int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
+        ingredientsForOrder.getIngredients().add(allIngredients.get(numberIngredient).getId());
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
         createOrder.then()
                 .statusCode(200)
@@ -58,7 +58,7 @@ public class CreateOrderWithAuthTest {
         int countIngredient = faker.number().numberBetween(2, allIngredients.size() - 2);
         for (int i = 0; i <= countIngredient; i++) {
             int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
-            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
+            ingredientsForOrder.getIngredients().add(allIngredients.get(numberIngredient).getId());
         }
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
         createOrder.then()
@@ -91,9 +91,9 @@ public class CreateOrderWithAuthTest {
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
         for (int i = 0; i <= countIngredient; i++) {
             int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
-            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient).getId());
+            ingredientsForOrder.getIngredients().add(allIngredients.get(numberIngredient).getId());
         }
-        ingredientsForOrder.ingredients.set(0, ingredientsForOrder.ingredients.get(0) + "test");
+        ingredientsForOrder.getIngredients().set(0, ingredientsForOrder.getIngredients().get(0) + "test");
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
         createOrder.then()
                 .statusCode(500);
