@@ -1,6 +1,8 @@
 import com.github.javafaker.Faker;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,16 +17,18 @@ public class UserUpdateTest {
     private User user = UserGenerator.requiredFields();
     private Faker faker = new Faker();
     private Response loginResponse;
+
     @Before
     public void setUp() {
         RestAssured.baseURI = BASE_URL;
-//        token = null;
         userClient.createUser(user);
         loginResponse = userClient.loginUser(UserCreds.credsForm(user));
         token = loginResponse.body().as(LoginResponse.class).getAccessToken();
     }
+
+    @DisplayName("Обновление почты с авторизацией")
     @Test
-    public void userUpdateEmailWithAuth(){
+    public void userUpdateEmailWithAuth() {
         User userFake = user;
         String newEmail = faker.internet().emailAddress();
         userFake.setEmail(newEmail);
@@ -39,8 +43,9 @@ public class UserUpdateTest {
         loginResponseNewEmail.then().statusCode(200);
     }
 
+    @DisplayName("Обновление имени с авторизацией")
     @Test
-    public void userUpdateNameWithAuth(){
+    public void userUpdateNameWithAuth() {
         User userFake = user;
         String newName = faker.name().username();
         userFake.setName(newName);
@@ -55,8 +60,9 @@ public class UserUpdateTest {
         loginResponseNewName.then().statusCode(200);
     }
 
+    @DisplayName("Обновление пароля с авторизацией")
     @Test
-    public void userUpdatePasswordWithAuth(){
+    public void userUpdatePasswordWithAuth() {
         User userFake = user;
         String newPassword = faker.internet().password();
         userFake.setPassword(newPassword);
@@ -71,8 +77,9 @@ public class UserUpdateTest {
         loginResponseNewPassword.then().statusCode(200);
     }
 
+    @DisplayName("Обновление почты, имени, пароля с авторизацией")
     @Test
-    public void userUpdateFullDataWithAuth(){
+    public void userUpdateFullDataWithAuth() {
         User userFake = user;
         String newPassword = faker.internet().password();
         String newEmail = faker.internet().emailAddress();
@@ -90,15 +97,14 @@ public class UserUpdateTest {
         Response loginResponseNewData = userClient.loginUser(UserCreds.credsForm(user));
         loginResponseNewData.then().statusCode(200);
     }
+
+    @After
     public void tearDown() {
         Response loginResponseNew = userClient.loginUser(UserCreds.credsForm(user));
         if (loginResponseNew.statusCode() == 200) {
             token = loginResponseNew.body().as(LoginResponse.class).getAccessToken();
-//            UserClient userClient = new UserClient();
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
-
         }
     }
 }
