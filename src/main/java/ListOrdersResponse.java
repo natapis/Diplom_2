@@ -2,9 +2,9 @@ import java.util.ArrayList;
 
 public class ListOrdersResponse {
     private ArrayList<IngredientsForOrder> orders;
-    boolean success;
-    float total;
-    float totalToday;
+    private boolean success;
+    private float total;
+    private float totalToday;
     public ArrayList<IngredientsForOrder> getOrders(){
         return orders;
     }
