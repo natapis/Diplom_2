@@ -38,7 +38,7 @@ public class CreateOrderWithAuthTest {
     @Test
     public void createOrderOneIngredient() {
         Order order = new Order();
-        int numberIngredient = faker.number().numberBetween(0, 14);
+        int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
         ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
@@ -55,9 +55,10 @@ public class CreateOrderWithAuthTest {
     public void createOrderFewIngredients() {
         Order order = new Order();
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        int countIngredient = faker.number().numberBetween(2, 13);
+        int countIngredient = faker.number().numberBetween(2, allIngredients.size() - 2);
         for (int i = 0; i <= countIngredient; i++) {
-            ingredientsForOrder.ingredients.add(allIngredients.get(i)._id);
+            int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
+            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
         }
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
         createOrder.then()
@@ -86,9 +87,11 @@ public class CreateOrderWithAuthTest {
     @Test
     public void createOrderWithWrongIngredients() {
         Order order = new Order();
+        int countIngredient = faker.number().numberBetween(2, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        for (int i = 0; i <= 3; i++) {
-            ingredientsForOrder.ingredients.add(allIngredients.get(i)._id);
+        for (int i = 0; i <= countIngredient; i++) {
+            int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
+            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
         }
         ingredientsForOrder.ingredients.set(0, ingredientsForOrder.ingredients.get(0) + "test");
         Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
