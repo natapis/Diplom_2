@@ -1,6 +1,8 @@
 import com.github.javafaker.Faker;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,21 +12,19 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 public class UserUpdateWithoutAuthTest {
-//    private String token;
     private UserClient userClient = new UserClient();
     private User user = UserGenerator.requiredFields();
     private Faker faker = new Faker();
-    private Response loginResponse;
+
     @Before
     public void setUp() {
         RestAssured.baseURI = BASE_URL;
-//        token = null;
         userClient.createUser(user);
-        loginResponse = userClient.loginUser(UserCreds.credsForm(user));
- //       token = loginResponse.body().as(LoginResponse.class).getAccessToken();
     }
+
+    @DisplayName("Обновление почты без токена")
     @Test
-    public void userUpdateEmailWithoutAuth(){
+    public void userUpdateEmailWithoutAuth() {
         User userFake = user;
         String newEmail = faker.internet().emailAddress();
         userFake.setEmail(newEmail);
@@ -39,8 +39,9 @@ public class UserUpdateWithoutAuthTest {
         loginResponseNewEmail.then().statusCode(401);
     }
 
+    @DisplayName("Обновление имени без токена")
     @Test
-    public void userUpdateNameWithoutAuth(){
+    public void userUpdateNameWithoutAuth() {
         User userFake = user;
         String oldName = user.getName();
         String newName = faker.name().username();
@@ -57,8 +58,9 @@ public class UserUpdateWithoutAuthTest {
         loginResponseNewName.then().statusCode(200);
     }
 
+    @DisplayName("Обновление пароля без токена")
     @Test
-    public void userUpdatePasswordWithoutAuth(){
+    public void userUpdatePasswordWithoutAuth() {
         User userFake = user;
         String newPassword = faker.internet().password();
         userFake.setPassword(newPassword);
@@ -73,8 +75,9 @@ public class UserUpdateWithoutAuthTest {
         loginResponseNewPassword.then().statusCode(401);
     }
 
+    @DisplayName("Обновление почты, имени, пароля без токена")
     @Test
-    public void userUpdateFullDataWithoutAuth(){
+    public void userUpdateFullDataWithoutAuth() {
         User userFake = user;
         String newPassword = faker.internet().password();
         String newEmail = faker.internet().emailAddress();
@@ -92,13 +95,13 @@ public class UserUpdateWithoutAuthTest {
         Response loginResponseNewData = userClient.loginUser(UserCreds.credsForm(userFake));
         loginResponseNewData.then().statusCode(401);
     }
+
+    @After
     public void tearDown() {
         Response loginResponseNew = userClient.loginUser(UserCreds.credsForm(user));
         if (loginResponseNew.statusCode() == 200) {
             String token = loginResponseNew.body().as(LoginResponse.class).getAccessToken();
-//            UserClient userClient = new UserClient();
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
 
         }
