@@ -1,3 +1,4 @@
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.After;
@@ -19,6 +20,7 @@ public class UserCreateTest {
         token = null;
     }
 
+    @DisplayName("Создание пользователя с обязательными полями")
     @Test
     public void createUserFullDateTest() {
         UserClient userClient = new UserClient();
@@ -28,6 +30,8 @@ public class UserCreateTest {
         loginResponse = userClient.loginUser(UserCreds.credsForm(user));
         Assert.assertEquals("Не логинится", 200, loginResponse.statusCode());
     }
+
+    @DisplayName("Создание пользователя с дублирующей почтой")
     @Test
     public void createUserDoubleEmailTest() {
         UserClient userClient = new UserClient();
@@ -37,11 +41,10 @@ public class UserCreateTest {
         Response createResponse = userClient.createUser(doubleUser);
         loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         createResponse.then().body("message", equalTo("User already exists")).and().statusCode(403);
- //       Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
- //       Assert.assertEquals("Логинится, а не должен", 401, loginResponse.statusCode());
     }
 
+    @DisplayName("Создание пользователя с дублирующим именем")
     @Test
     public void createUserDoubleNameTest() {
         UserClient userClient = new UserClient();
@@ -51,23 +54,21 @@ public class UserCreateTest {
         Response createResponse = userClient.createUser(doubleUser);
         loginResponse = userClient.loginUser(UserCreds.credsForm(doubleUser));
         Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
-//        createResponse.then().body("message", equalTo("User already exists")).and().statusCode(403);
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
+    @DisplayName("Создание пользователя без указания имени")
     @Test
     public void createUserWithoutNameTest() {
         UserClient userClient = new UserClient();
         User user = UserGenerator.withoutName();
         Response createResponse = userClient.createUser(user);
- //       User doubleUser = UserGenerator.doubleUserName(user.getName());
- //       Response createResponse = userClient.createUser(doubleUser);
- //       Assert.assertEquals("неверный статус ответа", 403, createResponse.statusCode());
         createResponse.then().body("message", equalTo("Email, password and name are required fields")).and().statusCode(403);
         loginResponse = userClient.loginUser(UserCreds.credsForm(user));
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
+    @DisplayName("Создание пользователя без указания email")
     @Test
     public void createUserWithoutEmailTest() {
         UserClient userClient = new UserClient();
@@ -78,6 +79,7 @@ public class UserCreateTest {
         loginResponse.then().body("message", equalTo("email or password are incorrect")).and().statusCode(401);
     }
 
+    @DisplayName("Создание пользователя без указания пароля")
     @Test
     public void createUserWithoutPasswordTest() {
         UserClient userClient = new UserClient();
@@ -89,9 +91,8 @@ public class UserCreateTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         if (loginResponse.statusCode() == 200) {
-//            idCourier = loginResponse.body().as(LoginAnswer.class).getId();
             token = loginResponse.body().as(LoginResponse.class).getAccessToken();
             UserClient userClient = new UserClient();
             Response deleteResponse = userClient.deleteUser(token.substring(7));
