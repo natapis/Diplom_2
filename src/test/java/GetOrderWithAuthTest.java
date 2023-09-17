@@ -1,19 +1,16 @@
 import com.github.javafaker.Faker;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static constant.Api.BASE_URL;
-import static java.lang.Math.random;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 public class GetOrderWithAuthTest {
 
@@ -34,14 +31,15 @@ public class GetOrderWithAuthTest {
         allIngredients = ingredientResponse.as(IngredientResponse.class).getData();
         loginResponse = userClient.loginUser(UserCreds.credsForm(user));
         token = loginResponse.body().as(LoginResponse.class).getAccessToken();
-        Random random = new Random();
     }
 
+    @DisplayName("Получение списка из одного заказа конкретного пользователя с авторизацией")
     @Test
     public void getOrdersOneOrder() {
         Order order = new Order();
+        int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        ingredientsForOrder.ingredients.add(allIngredients.get(2)._id);
+        ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
         order.createOrderWithAuth(token, ingredientsForOrder);
         Response getOrders = userClient.getInfoOrderWithAuth(token);
         getOrders.then()
@@ -50,22 +48,17 @@ public class GetOrderWithAuthTest {
                 .body("success", equalTo(true));
         float totalUser = getOrders.body().as(ListOrdersResponse.class).getOrders().size();
         Assert.assertEquals(1, totalUser, 0);
- //       Response createOrder = order.createOrderWithAuth(token, ingredientsForOrder);
- //       createOrder.then()
- //               .statusCode(200)
-//                .and()
- //               .body("success", equalTo(true))
- //               .and()
-  //              .body("name", notNullValue());
-
     }
 
+    @DisplayName("Получение списка из нескольких заказов конкретного пользователя с авторизацией")
     @Test
     public void getOrderFewOrder() {
         Order orderOne = new Order();
+        int countIngredient = faker.number().numberBetween(1, allIngredients.size() - 1);
         IngredientsForOrder ingredientsForOrder = new IngredientsForOrder();
-        for (int i=0; i<=3; i++){
-            ingredientsForOrder.ingredients.add(allIngredients.get(i)._id);
+        for (int i = 0; i <= countIngredient; i++) {
+            int numberIngredient = faker.number().numberBetween(0, allIngredients.size() - 1);
+            ingredientsForOrder.ingredients.add(allIngredients.get(numberIngredient)._id);
         }
         orderOne.createOrderWithAuth(token, ingredientsForOrder);
         Order orderTwo = new Order();
@@ -79,6 +72,7 @@ public class GetOrderWithAuthTest {
         Assert.assertEquals(2, totalUser, 0);
     }
 
+    @DisplayName("Получение пустого списка заказов конкретного пользователя с авторизацией")
     @Test
     public void getOrderNullOrder() {
         Response getOrder = userClient.getInfoOrderWithAuth(token);
@@ -90,14 +84,11 @@ public class GetOrderWithAuthTest {
         Assert.assertEquals(0, totalUser, 0);
     }
 
+    @After
     public void tearDown() {
         if (loginResponse.statusCode() == 200) {
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
-
         }
     }
-
-
 }
