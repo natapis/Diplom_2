@@ -96,7 +96,6 @@ public class UserCreateTest {
             token = loginResponse.body().as(LoginResponse.class).getAccessToken();
             UserClient userClient = new UserClient();
             Response deleteResponse = userClient.deleteUser(token.substring(7));
-            System.out.println(token);
             Assert.assertEquals("Пользователь не удален", 202, deleteResponse.statusCode());
 
         }
