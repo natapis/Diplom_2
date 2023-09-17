@@ -1,3 +1,7 @@
+package order;
+
+import order.Ingredient;
+
 import java.util.ArrayList;
 
 public class IngredientResponse {

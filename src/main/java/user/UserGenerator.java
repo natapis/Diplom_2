@@ -1,4 +1,7 @@
+package user;
+
 import com.github.javafaker.Faker;
+import user.User;
 
 public class UserGenerator {
     public static User requiredFields() {

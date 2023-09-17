@@ -1,3 +1,5 @@
+package order;
+
 public class Ingredient {
     private String _id;
     private String name;

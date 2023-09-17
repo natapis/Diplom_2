@@ -1,3 +1,5 @@
+package user;
+
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -5,6 +7,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import user.*;
 
 import static constant.Api.BASE_URL;
 import static org.hamcrest.core.IsEqual.equalTo;

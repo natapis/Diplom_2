@@ -1,4 +1,7 @@
+package order;
+
 import io.restassured.response.Response;
+import order.IngredientsForOrder;
 
 import static constant.Api.*;
 import static io.restassured.RestAssured.given;

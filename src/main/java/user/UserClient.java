@@ -1,4 +1,7 @@
+package user;
+
 import io.restassured.response.Response;
+import user.User;
 
 import static constant.Api.*;
 import static io.restassured.RestAssured.given;

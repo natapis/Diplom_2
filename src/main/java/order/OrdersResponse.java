@@ -1,3 +1,7 @@
+package order;
+
+import order.IngredientsForOrder;
+
 public class OrdersResponse {
     private String createdAt;
     private IngredientsForOrder ingredients;
