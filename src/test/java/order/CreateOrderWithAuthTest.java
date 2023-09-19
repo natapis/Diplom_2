@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import order.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

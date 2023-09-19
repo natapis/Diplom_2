@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import user.*;
 
 import static constant.Api.BASE_URL;
 import static org.hamcrest.core.IsEqual.equalTo;
